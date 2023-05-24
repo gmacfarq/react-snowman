@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { randomWord, ENGLISH_WORDS } from "./words.js"
+
 import "./Snowman.css";
 import img0 from "./0.png";
 import img1 from "./1.png";
@@ -25,8 +27,8 @@ import img6 from "./6.png";
 
 function Snowman({
       images=[img0, img1, img2, img3, img4, img5, img6],
-      words=["apple"],
-      maxWrong=6,
+      words = [randomWord(ENGLISH_WORDS)],
+      maxWrong=6
     }) {
   /** by default, allow 6 guesses and use provided gallows images. */
 
@@ -65,6 +67,13 @@ function Snowman({
     setNWrong(n => n + (answer.includes(ltr) ? 0 : 1));
   }
 
+  function handleReset(evt){
+    setNWrong(0);
+    setGuessedLetters(() => new Set());
+    setAnswer(a=>randomWord(ENGLISH_WORDS));
+
+  }
+
   /** generateButtons: return array of letter buttons to render */
   function generateButtons() {
     return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
@@ -86,6 +95,7 @@ function Snowman({
         <p className="Snowman-word">{guessedWord()}</p>
         {lose || <p>{generateButtons()}</p>}
         {lose && <p id="lose-game"> You lose </p>}
+        <button onClick={handleReset}>Reset</button>
       </div>
   );
 }
